@@ -1,63 +1,82 @@
-# Anagrams
+# Server branch
 
-use "main" branch for hosting the entire project locally.
-
-use "server" branch for hosting the frontend and making requests to the endpoints.
-
-## Requirements
-
-- Basic Laravel requirements that can be found here: https://laravel.com/docs/12.x/installation#creating-a-laravel-project / (Composer, PHP, Node, etc.)
-- Something to host a PostgreSQL DB with.
-## Local Setup
-
-Clone/download the repo, then..
-
-Install dependencies
+Setup is really simple here. Just clone/download and do
 
 ```bash
-composer install
-npm install && npm run build
+npm install
+npm run dev
 ```
 
-Either copy the .env.example file or manually edit the .env file to meet your requirements
+# React + TypeScript + Vite
 
-```bash
-cp .env.example .env
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-Run the migrations and cache routes
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```bash
-php artisan migrate
-php artisan cache
-php artisan optimize
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-Finally, run:
-
-```bash
-composer run dev
-```
-
-## Deployment
-
-For uploading to server, the project utilizes Docker.
-
-## Tests
-
-The command for running tests:
-
-```bash
-php artisan test
-```
-
-## FAQ
-
-**How it works?**  
-When importing an URL, the app tries to download a plain-text list of words from it, parses each line, gives all the words a signature for better lookups and stores the results in the designated DB by batches.
-
-**What made you use that algorithm?**  
-Sorting the characters signature is simple. It allows the database to answer using a single indexed column and an fairly simplistic equality search.
-
-**What performance vs correctness compromises could be made?**  
-I've used a fairly straightforward method. Parse each word, sort its letters into signatures, and then store them in the DB. I could increase/decrease the batch sizes further, truncate words, try to utilize the Big-O notation, but for what's currently being done, I feel that simple indexing works.
