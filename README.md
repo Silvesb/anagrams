@@ -7,6 +7,14 @@ npm install
 npm run dev
 ```
 
+### THE SERVERS
+
+Since I am using a free solution (Render.com), you're going to have to visit both of these sites at least once to wake them up.     
+May take a minute.
+
+[Wordbase Importer](https://wordbase-importer.onrender.com/)    
+[Anagram Finder](https://anagram-finder.onrender.com/)
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
