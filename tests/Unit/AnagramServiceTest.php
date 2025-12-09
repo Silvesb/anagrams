@@ -15,10 +15,7 @@ class AnagramServiceTest extends TestCase
     {
         $service = new AnagramService();
 
-        $this->assertSame(
-            $service->signature('test'),
-            $service->signature('sest')
-        );
+        $this->assertSame('estt', $service->signature('test'));
     }
 
     public function test_normalizes_words(): void
@@ -33,13 +30,13 @@ class AnagramServiceTest extends TestCase
         $service = new AnagramService();
 
         Word::insert([
-            ['word' => 'test', 'signature' => $service->signature('test')],
             ['word' => 'rest', 'signature' => $service->signature('rest')],
-            ['word' => 'stest', 'signature' => $service->signature('stest')],
+            ['word' => 'erst', 'signature' => $service->signature('erst')],
+            ['word' => 'test', 'signature' => $service->signature('test')],
         ]);
 
-        $anagrams = $service->findAnagrams('test');
+        $anagrams = $service->findAnagrams('rest');
 
-        $this->assertSame(['rest'], $anagrams);
+        $this->assertSame(['erst'], $anagrams);
     }
 }
