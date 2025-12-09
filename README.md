@@ -6,6 +6,8 @@ use "server" branch for hosting the frontend and making requests to the endpoint
 
 (server branch uses two endpoints, one being [the importer](https://wordbase-importer.onrender.com/) and the other being the [anagram finder](https://anagram-finder.onrender.com/))
 
+their links are [here](https://github.com/Silvesb/wordbase-importer) and [here](https://github.com/Silvesb/anagram-finder) respectively
+
 ## Requirements
 
 - Basic Laravel requirements that can be found here: https://laravel.com/docs/12.x/installation#creating-a-laravel-project / (Composer, PHP, Node, etc.)
