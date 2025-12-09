@@ -4,7 +4,6 @@ import { useState } from "react";
 function AnagramSearch() {
     const [word, setWord] = useState("");
     const [anagrams, setAnagrams] = useState<string[]>([]);
-    const [message, setMessage] = useState("");
     const [isSearching, setIsSearching] = useState(false);
 
     const findAnagrams = async () => {
@@ -43,7 +42,7 @@ function AnagramSearch() {
             } else {
                 resultMessage = "No results found!";
             }
-            setMessage(resultMessage);
+            alert(resultMessage);
         } catch (err) {
             console.log(err);
             alert(err);
