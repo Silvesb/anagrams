@@ -5,12 +5,10 @@ type Props = {
 function Welcome({ onSelect }: Props) {
   return (
     <section>
-      <h1>Welcome to the Anagram Toolkit</h1>
-      <p>Choose what you want to do:</p>
+      <h1>Welcome to the Anagram App</h1>
       <button onClick={() => onSelect("import")}>Import Wordbase</button>
-      <button onClick={() => onSelect("search")} style={{ marginLeft: "0.75rem" }}>
-        Find Anagrams
-      </button>
+      <br /><br />
+      <button onClick={() => onSelect("search")}>Search for Anagrams</button>
     </section>
   );
 }

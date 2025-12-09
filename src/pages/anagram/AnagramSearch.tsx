@@ -1,90 +1,96 @@
 import { useState } from "react";
 
-const SEARCH_ENDPOINT = "https://anagram-finder.onrender.com/api/anagrams";
-
 function AnagramSearch() {
   const [word, setWord] = useState("");
   const [anagrams, setAnagrams] = useState<string[]>([]);
-  const [message, setMessage] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const anagramSearchEndpoint = "https://anagram-finder.onrender.com/api/anagrams";
 
   const findAnagrams = async () => {
-    let resultMessage = "";
-    setAnagrams([]);
-    setMessage("");
+        let resultMessage = "";
 
-    if (!word.trim()) {
-      alert("Input field is empty!");
-      return;
-    }
+        if (anagrams) {
+            setAnagrams([]);
+        }
 
-    setIsSearching(true);
+        if (!word) {
+            alert("Input field is empty!");
+            return;
+        }
+        setIsSearching(true);
 
-    try {
-      const response = await fetch(SEARCH_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ word }),
-      });
+        try {
+            const response = await fetch(anagramSearchEndpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ word }),
+            });
+            const data = await response.json();
 
-      const data = await response.json();
+            if (!response.ok) {
+                alert(data.error);
+                return;
+            }
+            const results: string[] = (data.anagrams ?? []);
 
-      if (!response.ok) {
-        alert(data.error ?? "Failed to fetch anagrams.");
-        return;
-      }
-      console.log(data);
-
-      const results: string[] = data.anagrams ?? [];
-
-      if (results.length) {
-        setAnagrams(results);
-        resultMessage = "Found anagrams!";
-      } else {
-        resultMessage = "No results found!";
-      }
-
-      setMessage(resultMessage);
-    } catch (err) {
-      console.log(err);
-      alert("Something went wrong.");
-    } finally {
-      if (resultMessage) {
-        alert(resultMessage);
-      }
-      setIsSearching(false);
-    }
-  };
+            console.log(data.anagrams);
+            if (data.anagrams[0] != null) {
+                setAnagrams(results);
+                resultMessage = "Found anagrams!";
+            } else {
+                resultMessage = "No results found!";
+            }
+        } catch (err) {
+            console.log(err);
+            alert(err);
+            setIsSearching(false);
+            return;
+        } finally {
+              alert(resultMessage);
+            setIsSearching(false);
+        }
+    };
 
   return (
-    <div>
-      <h2>Find anagrams</h2>
-      <p>Enter a word and the app queries the anagram API for matches.</p>
-
+    <div className="container">
+      <div>
+        <h1>Find Anagrams</h1>
+      </div>
+      <br />
+      <p>
+          Enter a collection of letters and the program will find a
+          suitable (set of) anagram(s)
+      </p>
+      <h4>Enter a word:</h4>
       <input
-        value={word}
-        onChange={(e) => setWord(e.target.value)}
-        disabled={isSearching}
-        type="text"
-        placeholder="Enter a word"
+          className="form-control"
+          value={word}
+          onChange={(e) => setWord(e.target.value)}
+          disabled={isSearching}
+          type="text"
       />
-
-      <button onClick={findAnagrams} disabled={isSearching}>
-        {isSearching ? "Searching..." : "Find anagrams"}
+      <br />
+      <button
+          className="btn btn-primary"
+          onClick={findAnagrams}
+          disabled={isSearching}
+      >
+          {isSearching ? "Searching..." : "Find anagrams"}
       </button>
 
-      {message && <p>{message}</p>}
-
-      {anagrams.length > 0 && (
-        <ul>
-          {anagrams.map((anagram) => (
-            <li key={anagram}>{anagram}</li>
-          ))}
-        </ul>
-      )}
-    </div>
+      <br />
+      <div className="container border">
+          <ul>
+              {anagrams.map((anagram) => (
+                  <li key={anagram}>
+                      {anagram}
+                  </li>
+              ))}
+          </ul>
+      </div>
+  </div>
   );
 }
 

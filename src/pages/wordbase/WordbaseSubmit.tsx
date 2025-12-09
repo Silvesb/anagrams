@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-const IMPORT_ENDPOINT = "https://wordbase-importer.onrender.com/api/wordbase/submit";
-
 function WordbaseSubmit() {
   const [url, setUrl] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const wordBaseEndpoint = "https://wordbase-importer.onrender.com/api/wordbase/submit";
 
   const submitWordbase = async () => {
     setMessage("");
@@ -17,24 +16,24 @@ function WordbaseSubmit() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(IMPORT_ENDPOINT, {
+      const response = await fetch(wordBaseEndpoint, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ url: url.trim() }),
+            body: JSON.stringify({url: url}),
         });
         const data = await response.json();
 
         if (!response.ok) {
-            setMessage(data.error ?? "Failed to import wordbase.");
+            setMessage(data.error);
             return;
         }
         setMessage(data.message);
 
         } catch (err) {
             console.log(err);
-            setMessage("import failed");
+            setMessage("Import failed");
         } finally {
             alert(message || "Import was successful");
             setIsSubmitting(false);
@@ -58,7 +57,7 @@ function WordbaseSubmit() {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         disabled={isSubmitting}
-        placeholder="https://www.opus.ee/lemmad2013.txt"
+        placeholder="http://example.com/something.txt"
       />
       <button onClick={submitWordbase} disabled={isSubmitting}>
         {isSubmitting ? "Importing..." : "Submit"}
