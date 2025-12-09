@@ -61,3 +61,6 @@ Sorting the characters signature is simple. It allows the database to answer usi
 
 **What performance vs correctness compromises could be made?**  
 I've used a fairly straightforward method. Parse each word, sort its letters into signatures, and then store them in the DB. I could increase/decrease the batch sizes further, truncate words, try to utilize the Big-O notation, but for what's currently being done, I feel that simple indexing works.
+
+I suppose the biggest compromise I've made however is the server-side one. Since a free solution was used (Render.com), and I "only" get 1GB of space for the DB and "very little" memory to utilize, I had to cut costs by having every new imported wordbase replace the last one. While this wasn't exactly ***NECESSARY***, I did feel that since the scope of the project is fairly small, it wouldn't be too big of a loss.
+An issue this could potentially cause is this application becoming popular and multiple users entering their own wordbases, some even incorrectly. Who knows what kinds of anagrams one might find this way?
